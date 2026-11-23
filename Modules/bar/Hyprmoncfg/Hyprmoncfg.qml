@@ -352,7 +352,7 @@ Rectangle {
                                 Layout.fillWidth: true; Layout.preferredHeight: 42
                                 radius: 10; color: root.cardColor; border.width: 1; border.color: root.borderColor
                                 RowLayout {
-                                    anchors.fill: parent; anchors.leftMargin: 12; anchors.rightMargin: 8; spacing: 8
+                                    anchors.leftMargin: 12; anchors.rightMargin: 8; spacing: 8
                                     Text { text: "󰆓"; color: root.accent; font.family: Theme.iconFontFamily; font.pixelSize: 14 }
                                     Text { Layout.fillWidth: true; text: modelData; color: root.textColor; font.family: Theme.fontFamily; font.pixelSize: 11; font.bold: true }
                                     ActionButton { label: "Apply"; implicitHeight: 30; onClicked: backend.applyProfile(modelData) }
