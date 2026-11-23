@@ -29,13 +29,13 @@ Rectangle {
             font.pixelSize: 17
         }
 
-        Text {
-            text: "Walls"
+        /* Text {
+            text: "Wallpaper"
             color: root.contentColor
             font.family: Theme.fontFamily
             font.pixelSize: 12
             font.bold: true
-        }
+        } */
     }
 
     // Hover only highlights: the deck takes keyboard focus, so opening it on

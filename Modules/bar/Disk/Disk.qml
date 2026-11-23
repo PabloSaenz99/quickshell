@@ -39,7 +39,7 @@ Rectangle {
         }
 
         Text {
-            text: diskService.diskPercent
+            text: diskService.diskPercent[0]
             color: textColor
             font.bold: true
             font.pixelSize: 13
@@ -68,16 +68,18 @@ Rectangle {
             if (!anchor.window) return;
             var isVertBar = anchor.window.height > anchor.window.width
             if (isVertBar) {
-                diskPopup.anchor.rect.x = -diskPopup.width - 5
-                diskPopup.anchor.rect.y = anchor.window.contentItem.mapFromItem(diskRoot, 0, 0).y + diskRoot.height/2 - diskPopup.height/2
+                diskPopup.anchor.rect.x = -diskPopup.width - 5;
+                diskPopup.anchor.rect.y = anchor.window.contentItem.mapFromItem(diskRoot, 0, 0).y + diskRoot.height/2 - diskPopup.height/2;
             } else {
                 diskPopup.anchor.rect.x = anchor.window.contentItem.mapFromItem(diskRoot, 0, 0).x + diskRoot.width/2 - diskPopup.width/2;
                 diskPopup.anchor.rect.y = anchor.window.height + 15;
             }
         }
 
-        implicitWidth: popupCol.implicitWidth + 30
-        implicitHeight: popupCol.implicitHeight + 20
+        // implicitWidth: popupCol.implicitWidth + 30
+        // implicitHeight: popupCol.implicitHeight + 20
+        implicitHeight: 60
+        implicitWidth: 285
         color: "transparent"
 
         Rectangle {
@@ -88,41 +90,51 @@ Rectangle {
             radius: 12
 
             ColumnLayout {
-                id: popupCol
-                anchors.centerIn: parent
-                spacing: 6
+                Layout.fillWidth: true
+                spacing: 12
 
-                Text {
-                    text: "Root Disk (/)"
-                    color: Theme.diskColor
-                    font.bold: true
-                    font.pixelSize: 14
-                    font.family: Theme.fontFamily
-                    Layout.alignment: Qt.AlignHCenter
-                }
+                Repeater {
+                    model: diskService.diskName.length
 
-                Rectangle { Layout.fillWidth: true; height: 1; color: Theme.surface }
+                    delegate: ColumnLayout {
+                        id: popupCol
+                        // anchors.centerIn: parent
+                        spacing: 6
 
-                RowLayout {
-                    spacing: 12
-                    Text {
-                        text: "󰋊" // Icon
-                        color: Theme.text
-                        font.pixelSize: 16
-                        font.family: "JetBrainsMono Nerd Font"
-                    }
-                    Text {
-                        text: "Used:"
-                        color: Theme.text
-                        font.pixelSize: 13
-                        font.family: Theme.fontFamily
-                    }
-                    Text {
-                        text: diskService.diskUsed + " / " + diskService.diskTotal
-                        color: Theme.diskColor
-                        font.bold: true
-                        font.pixelSize: 13
-                        font.family: Theme.fontFamily
+                        RowLayout {
+                            Layout.alignment: Qt.AlignHCenter
+                            spacing: 12
+
+                            Text {
+                                text: " " + diskService.diskName[index] + " ->"
+                                color: Theme.diskColor
+                                font.bold: true
+                                font.pixelSize: 14
+                                font.family: Theme.fontFamily
+                            }
+
+                            Text {
+                                text: "󰋊"
+                                color: Theme.text
+                                font.pixelSize: 16
+                                font.family: "JetBrainsMono Nerd Font"
+                            }
+
+                            Text {
+                                text: "Used:"
+                                color: Theme.text
+                                font.pixelSize: 13
+                                font.family: Theme.fontFamily
+                            }
+
+                            Text {
+                                text: diskService.diskUsed[index] + " / " + diskService.diskTotal[index] + " (" + diskService.diskPercent[index] + " %)"
+                                color: Theme.diskColor
+                                font.bold: true
+                                font.pixelSize: 13
+                                font.family: Theme.fontFamily
+                            }
+                        }
                     }
                 }
             }

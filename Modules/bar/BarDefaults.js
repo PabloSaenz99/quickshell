@@ -4,7 +4,7 @@
 
 function createWorkspacesConfig() {
     return {
-        "format": "gokturk",
+        "format": "arabic",
         "style": "circle",
         "transparent": false,
         "displayMode": "role",
@@ -16,7 +16,7 @@ function createWorkspacesConfig() {
         "scrollEnabled": true,
         "wrapAround": true,
         "reverseScroll": false,
-        "iconSize": 18,
+        "iconSize": 25,
         "maxIcons": 4
     };
 }
@@ -59,10 +59,10 @@ function normalizeWorkspacesConfig(config) {
 
 function createBarConfig() {
     return {
-        left: ["CurrencyConverter","RamModule","SysInfoGroup","WallpaperDeck"],
-        center: ["Workspaces","Notifications","Notepad","ActivityMonitor"],
-        right: ["Equalizer","Volume","Clipboard","Hyprmoncfg","PowerGroup"],
-        inactive: ["NightLight"],
+        left: ["Clipboard","Notepad","Disk","WallpaperDeck"],
+        center: ["Tray","Workspaces","ActivityMonitor"],
+        right: ["Equalizer","Hyprmoncfg","Notifications","Calendar","Power","Launcher"],
+        inactive: ["NightLight","Weather","Media","CurrencyConverter","PowerGroup","Volume","RamModule","SysInfoGroup"],
         workspaces: createWorkspacesConfig(),
         theme: "",
         barPosition: "top",

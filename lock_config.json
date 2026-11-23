@@ -1,9 +1,9 @@
 {
-  "backgroundPath": "~/Pictures/wallpapers/City-Rainy-Night.png",
-  "dimTimeoutMinutes": 21,
-  "lockTimeoutMinutes": 52,
-  "screenOffTimeoutMinutes": 69,
-  "suspendTimeoutMinutes": 79,
-  "ignoreMediaInhibit": true,
+  "backgroundPath": "~/.config/hypr/lock/wallpaper.jpg",
+  "dimTimeoutMinutes": 60,
+  "lockTimeoutMinutes": 30,
+  "screenOffTimeoutMinutes": 31,
+  "suspendTimeoutMinutes": 120,
+  "ignoreMediaInhibit": false,
   "_schemaVersion": 1
 }

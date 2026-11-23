@@ -9,9 +9,12 @@ Item {
     width: 0
     height: 0
 
-    property string diskUsed: "0G"
-    property string diskTotal: "0G"
-    property string diskPercent: "0%"
+    property var diskName: ["/", "D"]
+    property var diskUsed: ["0G"]
+    property var diskTotal: ["0G"]
+    property var diskPercent: ["0%"]
+
+    property var total: []
 
     function refresh() {
         if (diskProc.running) return;
@@ -20,16 +23,17 @@ Item {
     }
 
     function parseDiskStats(text) {
-        var parts = String(text || "").trim().split("|");
-        if (parts.length < 3) return;
-        service.diskUsed = parts[0];
-        service.diskTotal = parts[1];
-        service.diskPercent = parts[2];
+        const rows = String(text || "").trim().split('#').map(fila => fila.split('|'));
+        const matrix = rows[0].map((_, columna) => rows.map(fila => fila[columna]));
+
+        service.diskUsed = matrix[0];
+        service.diskTotal = matrix[1];
+        service.diskPercent = matrix[2];
     }
 
     Process {
         id: diskProc
-        command: ["sh", "-c", "df -h / | awk 'NR==2 {print $3 \"|\" $2 \"|\" $5}'"]
+        command: ["sh", "-c", "df -h / /mnt/windows/Pablo_D | awk 'NR>1 {print $3 \"|\" $2 \"|\" $5 \"#\"}'"]
         running: false
         property string output: ""
         stdout: SplitParser { onRead: data => { diskProc.output += data; } }

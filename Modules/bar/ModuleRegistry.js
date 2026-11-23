@@ -234,6 +234,20 @@ var _modules = [
         contexts: []
     },
     {
+        id: "disk-usage",
+        name: "Disk",
+        component: "Disk",
+        icon: "󰋊",
+        label: "Disk Usage",
+        description: "Disk usage statistics.",
+        category: "system",
+        color: "#f9e2af",
+        placements: ["bar", "dock"],
+        settingsPage: "sysinfo",
+        services: ["DiskService"],
+        contexts: []
+    },
+    {
         id: "memory",
         name: "RamModule",
         component: "RamModule",

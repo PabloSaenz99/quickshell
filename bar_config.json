@@ -1,31 +1,38 @@
 {
-  "_description": "This file stores the current bar layout.",
   "barPosition": "top",
   "center": [
+    "Tray",
     "Workspaces",
-    "Notifications",
-    "Notepad",
     "ActivityMonitor"
   ],
   "inactive": [
-    "NightLight"
-  ],
-  "left": [
+    "NightLight",
+    "Weather",
+    "Media",
     "CurrencyConverter",
+    "PowerGroup",
+    "Volume",
     "RamModule",
     "SysInfoGroup"
   ],
-  "moduleSchemaVersion": 3,
+  "left": [
+    "Clipboard",
+    "Notepad",
+    "Disk",
+    "WallpaperDeck"
+  ],
+  "moduleSchemaVersion": 4,
   "right": [
     "Equalizer",
-    "Volume",
-    "Clipboard",
     "Hyprmoncfg",
-    "PowerGroup"
+    "Notifications",
+    "Calendar",
+    "Power",
+    "Launcher"
   ],
   "theme": "",
   "workspaces": {
-    "format": "roman",
+    "format": "arabic",
     "style": "circle",
     "transparent": false,
     "displayMode": "role",
@@ -37,7 +44,7 @@
     "scrollEnabled": true,
     "wrapAround": true,
     "reverseScroll": false,
-    "iconSize": 18,
+    "iconSize": 25,
     "maxIcons": 4
   }
 }

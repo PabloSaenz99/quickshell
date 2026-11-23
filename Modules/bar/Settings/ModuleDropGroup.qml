@@ -34,6 +34,7 @@ ColumnLayout {
         case "PowerGroup":        candidate = Theme.powerProfileColor; break;
         case "SysInfoGroup":      candidate = Theme.cpuColor; break;
         case "RamModule":         candidate = Theme.ramColor; break;
+        case "Disk":              candidate = Theme.ramColor; break;
         case "Media":             candidate = Theme.mediaColor; break;
         case "Hyprmoncfg":        candidate = Theme.displayColor; break;
         case "ActivityMonitor":   candidate = Theme.cpuColor; break;

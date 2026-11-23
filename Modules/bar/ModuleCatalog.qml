@@ -21,6 +21,7 @@ import "./NightLight"
 import "./WallpaperDeck"
 import "./Group"
 import "./Dock"
+import "./Disk"
 
 // Visual factory paired with ModuleRegistry.js. Context-sensitive properties
 // (monitor, workspace preferences, launcher settings, dock scale) are injected
@@ -48,6 +49,7 @@ Item {
     readonly property var componentMap: ({
         "Launcher": launcherComp,
         "Calendar": calendarComp,
+        "Disk": diskComp,
         "Notepad": notepadComp,
         "Workspaces": workspacesComp,
         "Notifications": notificationsComp,
@@ -125,6 +127,7 @@ Item {
     Component { id: ramModuleComp; RamModule {} }
     Component { id: currencyConverterComp; CurrencyConverter {} }
     Component { id: wallpaperDeckComp; WallpaperDeckButton {} }
+    Component { id: diskComp; Disk {} }
 
     Component {
         id: workspacesComp
