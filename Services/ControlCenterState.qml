@@ -4,4 +4,5 @@ import QtQuick
 QtObject {
     id: root
     signal toggleRequested()
+    signal equalizerOpenRequested()
 }

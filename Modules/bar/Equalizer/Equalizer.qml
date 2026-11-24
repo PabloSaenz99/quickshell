@@ -27,6 +27,13 @@ Rectangle {
 
     EqualizerBackend { id: equalizerBackend }
 
+    Connections {
+        target: S.ControlCenterState
+        function onEqualizerOpenRequested() {
+            hoverOpen.show()
+        }
+    }
+
     readonly property var defaultSink: Pipewire.defaultAudioSink
     readonly property var defaultSource: Pipewire.defaultAudioSource
     property alias eqFrequencies: equalizerBackend.eqFrequencies

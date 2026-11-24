@@ -27,6 +27,7 @@ Singleton {
     property string lastSnapshot: ""
     property int refreshSerial: 0
     property bool pendingOsdPulse: false
+    property bool refreshPending: false
     property int _subscribeRetryCount: 0
 
     function clamp(v, minV, maxV) {
@@ -35,7 +36,7 @@ Singleton {
 
     function requestOsdAfterRefresh() {
         root.pendingOsdPulse = true
-        root.refresh()
+        commandRefreshTimer.restart()
     }
 
     function parseSnapshot(text) {
@@ -80,6 +81,10 @@ Singleton {
         onExited: {
             root.parseSnapshot(snapshotProc.out.trim())
             snapshotProc.out = ""
+            if (root.refreshPending) {
+                root.refreshPending = false
+                refreshDebounce.restart()
+            }
         }
     }
 
@@ -122,8 +127,19 @@ Singleton {
         }
     }
 
+    Timer {
+        id: commandRefreshTimer
+        interval: 180
+        repeat: false
+        onTriggered: root.refresh()
+    }
+
     function refresh() {
-        if (snapshotProc.running) return
+        if (snapshotProc.running) {
+            root.refreshPending = true
+            return
+        }
+        root.refreshPending = false
         snapshotProc.out = ""
         snapshotProc.running = true
     }
@@ -132,6 +148,7 @@ Singleton {
 
     function toggleSinkMute() {
         const sinkArg = root.controlSinkName.length > 0 ? root.controlSinkName : "@DEFAULT_SINK@"
+        root.sinkMuted = !root.sinkMuted
         Quickshell.execDetached(["/usr/bin/pactl", "set-sink-mute", sinkArg, "toggle"])
         root.requestOsdAfterRefresh()
     }
@@ -139,6 +156,8 @@ Singleton {
     function setSinkVolume(volume: real) {
         const safeVol = root.clamp(volume, 0.0, 1.5)
         const sinkArg = root.controlSinkName.length > 0 ? root.controlSinkName : "@DEFAULT_SINK@"
+        root.sinkVolume = safeVol
+        root.sinkMuted = false
         Quickshell.execDetached(["/usr/bin/pactl", "set-sink-volume", sinkArg, String(Math.round(safeVol * 100)) + "%"])
         root.requestOsdAfterRefresh()
     }

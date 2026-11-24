@@ -2,7 +2,7 @@ import QtQuick
 import QtQuick.Layouts
 import Quickshell
 import "../../../Widgets"
-import "../../../Services"
+import "../../../Services" as S
 
 Rectangle {
 	id: root
@@ -13,8 +13,8 @@ Rectangle {
 	radius: 17
 
 	// Volume State Properties (same service source as OSD)
-	readonly property bool muted: Volume.sinkMuted === true
-	readonly property real vol: (Volume.sinkVolume !== undefined && Volume.sinkVolume !== null) ? Volume.sinkVolume : 0
+	readonly property bool muted: S.Volume.sinkMuted === true
+	readonly property real vol: (S.Volume.sinkVolume !== undefined && S.Volume.sinkVolume !== null) ? S.Volume.sinkVolume : 0
 	readonly property color wallpaperAccent: Theme.mediaColor
 	readonly property color mutedAccent: Qt.darker(wallpaperAccent, 1.30)
 	color: muted
@@ -64,12 +64,15 @@ Rectangle {
 		cursorShape: Qt.PointingHandCursor
 
 		// Listen to both Left (On/Off) and Middle (Mute) buttons
-		acceptedButtons: Qt.LeftButton | Qt.MiddleButton
+		acceptedButtons: Qt.LeftButton | Qt.MiddleButton | Qt.RightButton
 
 		onClicked: (mouse) => {
-			if (mouse.button === Qt.MiddleButton || mouse.button === Qt.LeftButton) {
-				// LEFT CLICK & MIDDLE CLICK: Mute completely
-				Volume.toggleSinkMute()
+			if (mouse.button === Qt.LeftButton || mouse.button === Qt.MiddleButton) {
+				// LEFT CLICK & MIDDLE CLICK: Mute/unmute
+				S.Volume.toggleSinkMute()
+			} else if (mouse.button === Qt.RightButton) {
+				// RIGHT CLICK: Open advanced sounds settings (equalizer)
+				S.ControlCenterState.equalizerOpenRequested()
 			}
 		}
 
@@ -78,7 +81,7 @@ Rectangle {
 			var step = 0.05
 			var newVol = root.vol + (wheel.angleDelta.y > 0 ? step : -step)
 			// Clamp volume between 0 and 1.5 (150%)
-			Volume.setSinkVolume(Math.min(Math.max(newVol, 0.0), 1.5))
+			S.Volume.setSinkVolume(Math.min(Math.max(newVol, 0.0), 1.5))
 		}
 	}
 }
