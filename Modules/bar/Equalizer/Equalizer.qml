@@ -27,13 +27,6 @@ Rectangle {
 
     EqualizerBackend { id: equalizerBackend }
 
-    Connections {
-        target: S.ControlCenterState
-        function onEqualizerOpenRequested() {
-            hoverOpen.show()
-        }
-    }
-
     readonly property var defaultSink: Pipewire.defaultAudioSink
     readonly property var defaultSource: Pipewire.defaultAudioSource
     property alias eqFrequencies: equalizerBackend.eqFrequencies
@@ -322,6 +315,105 @@ Rectangle {
                         }
                     }
 
+                    EqAudioDevices {
+                        Layout.fillWidth: true
+                        eq: root
+                    }
+
+                    Rectangle {
+                        Layout.fillWidth: true
+                        height: 188
+                        radius: 16
+                        color: root.glassCard
+                        border.width: 1
+                        border.color: root.glassStroke
+
+                        ColumnLayout {
+                            anchors.fill: parent
+                            anchors.margins: 10
+                            spacing: 6
+
+                            RowLayout {
+                                Layout.fillWidth: true
+                                Text { text: "󰓃"; font.family: "JetBrainsMono Nerd Font"; font.pixelSize: 15; color: root.sinkAccent }
+                                Text {
+                                    font.family: Theme.fontFamily
+                                    text: "Output Devices"
+                                    color: root.softText
+                                    font.bold: true
+                                    font.pixelSize: 13
+                                }
+                                Item { Layout.fillWidth: true }
+                                Text {
+                                    font.family: Theme.fontFamily
+                                    text: equalizerBackend.isBusy ? "Applying..." : ""
+                                    color: root.dimText
+                                    font.pixelSize: 10
+                                }
+                            }
+
+                            ListView {
+                                Layout.fillWidth: true
+                                Layout.fillHeight: true
+                                clip: true
+                                spacing: 8
+                                model: root.availableSinks
+
+                                delegate: Rectangle {
+                                    required property var modelData
+                                    width: ListView.view.width
+                                    height: 42
+                                    radius: 12
+                                    color: modelData.selected ? Qt.rgba(root.eqAccent.r, root.eqAccent.g, root.eqAccent.b, 0.16) : Theme.withAlpha(Theme.text, 0.04)
+                                    border.width: 1
+                                    border.color: modelData.selected ? Qt.rgba(root.eqAccent.r, root.eqAccent.g, root.eqAccent.b, 0.38) : Theme.withAlpha(Theme.text, 0.05)
+
+                                    RowLayout {
+                                        anchors.fill: parent
+                                        anchors.margins: 10
+                                        spacing: 8
+
+                                        Text {
+                                            text: modelData.selected ? "󰓃" : "󰖁"
+                                            font.family: "JetBrainsMono Nerd Font"
+                                            font.pixelSize: 13
+                                            color: modelData.selected ? root.sinkAccent : root.adaptiveSubtext
+                                        }
+
+                                        ColumnLayout {
+                                            Layout.fillWidth: true
+                                            spacing: 2
+
+                                            Text {
+                                                font.family: Theme.fontFamily
+                                                Layout.fillWidth: true
+                                                text: modelData.label
+                                                color: root.softText
+                                                font.pixelSize: 11
+                                                font.bold: modelData.selected
+                                                elide: Text.ElideRight
+                                            }
+
+                                            Text {
+                                                font.family: Theme.fontFamily
+                                                text: modelData.state.toLowerCase()
+                                                color: root.dimText
+                                                font.pixelSize: 9
+                                            }
+                                        }
+                                    }
+
+                                    MouseArea {
+                                        anchors.fill: parent
+                                        enabled: !equalizerBackend.isBusy
+                                        cursorShape: Qt.PointingHandCursor
+                                        onClicked: root.selectOutputSink(modelData.name)
+                                    }
+                                }
+                            }
+                        }
+                    }
+
                     Rectangle {
                         Layout.fillWidth: true
                         implicitHeight: eqSectionLayout.implicitHeight + 28
@@ -434,110 +526,11 @@ Rectangle {
                             }
                         }
                     }
-                EqControlsCard {
-                    Layout.fillWidth: true
-                    eq: root
-                    backend: equalizerBackend
-                }
-
-                EqAudioDevices {
-                    Layout.fillWidth: true
-                    eq: root
-                }
-
-                Rectangle {
-                    Layout.fillWidth: true
-                    height: 188
-                    radius: 16
-                    color: root.glassCard
-                    border.width: 1
-                    border.color: root.glassStroke
-
-                    ColumnLayout {
-                        anchors.fill: parent
-                        anchors.margins: 10
-                        spacing: 6
-
-                        RowLayout {
-                            Layout.fillWidth: true
-                            Text { text: "󰓃"; font.family: "JetBrainsMono Nerd Font"; font.pixelSize: 15; color: root.sinkAccent }
-                            Text {
-                                font.family: Theme.fontFamily
-                                text: "Output Devices"
-                                color: root.softText
-                                font.bold: true
-                                font.pixelSize: 13
-                            }
-                            Item { Layout.fillWidth: true }
-                            Text {
-                                font.family: Theme.fontFamily
-                                text: equalizerBackend.isBusy ? "Applying..." : ""
-                                color: root.dimText
-                                font.pixelSize: 10
-                            }
-                        }
-
-                        ListView {
-                            Layout.fillWidth: true
-                            Layout.fillHeight: true
-                            clip: true
-                            spacing: 8
-                            model: root.availableSinks
-
-                            delegate: Rectangle {
-                                required property var modelData
-                                width: ListView.view.width
-                                height: 42
-                                radius: 12
-                                color: modelData.selected ? Qt.rgba(root.eqAccent.r, root.eqAccent.g, root.eqAccent.b, 0.16) : Theme.withAlpha(Theme.text, 0.04)
-                                border.width: 1
-                                border.color: modelData.selected ? Qt.rgba(root.eqAccent.r, root.eqAccent.g, root.eqAccent.b, 0.38) : Theme.withAlpha(Theme.text, 0.05)
-
-                                RowLayout {
-                                    anchors.fill: parent
-                                    anchors.margins: 10
-                                    spacing: 8
-
-                                    Text {
-                                        text: modelData.selected ? "󰓃" : "󰖁"
-                                        font.family: "JetBrainsMono Nerd Font"
-                                        font.pixelSize: 13
-                                        color: modelData.selected ? root.sinkAccent : root.adaptiveSubtext
-                                    }
-
-                                    ColumnLayout {
-                                        Layout.fillWidth: true
-                                        spacing: 2
-
-                                        Text {
-                                            font.family: Theme.fontFamily
-                                            Layout.fillWidth: true
-                                            text: modelData.label
-                                            color: root.softText
-                                            font.pixelSize: 11
-                                            font.bold: modelData.selected
-                                            elide: Text.ElideRight
-                                        }
-
-                                        Text {
-                                            font.family: Theme.fontFamily
-                                            text: modelData.state.toLowerCase()
-                                            color: root.dimText
-                                            font.pixelSize: 9
-                                        }
-                                    }
-                                }
-
-                                MouseArea {
-                                    anchors.fill: parent
-                                    enabled: !equalizerBackend.isBusy
-                                    cursorShape: Qt.PointingHandCursor
-                                    onClicked: root.selectOutputSink(modelData.name)
-                                }
-                            }
-                        }
+                    EqControlsCard {
+                        Layout.fillWidth: true
+                        eq: root
+                        backend: equalizerBackend
                     }
-                }
                 }
             }
         }
@@ -567,6 +560,10 @@ Rectangle {
             }
             z: -1
         }
+    }
+
+    function openPanel() {
+        hoverOpen.show()
     }
 
 }

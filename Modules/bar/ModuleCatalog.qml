@@ -44,6 +44,20 @@ Item {
         warnings: []
     })
 
+    // Permanent hidden EQ instance: opening it by right-click must work even
+    // when the compact Equalizer module is removed from the bar layout.
+    Equalizer {
+        id: equalizerBridge
+        visible: false
+    }
+
+    Connections {
+        target: S.ControlCenterState
+        function onEqualizerOpenRequested() {
+            equalizerBridge.openPanel()
+        }
+    }
+
     readonly property int schemaVersion: ModuleRegistry.schemaVersion()
     readonly property var definitions: ModuleRegistry.definitions()
     readonly property var componentMap: ({
